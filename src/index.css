@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-size: 16px;
+}
+
+.high-contrast {
+  filter: contrast(150%);
+}
+
+/* Accessibility styles */
+.high-contrast .bg-brand-black {
+  background-color: #000000;
+}
+
+.high-contrast .text-brand-yellow {
+  color: #000000;
+}
+
+.high-contrast .text-white {
+  color: #000000;
+}
+
+.high-contrast .bg-brand-yellow {
+  background-color: #FFD700;
+}
+
+.high-contrast .text-brand-brown {
+  color: #000000;
+}
+
+.high-contrast .hover\:text-brand-brown:hover {
+  color: #000000;
+}
+
+.high-contrast .hover\:bg-brand-brown:hover {
+  background-color: #000000;
+  color: #FFD700;
+}
