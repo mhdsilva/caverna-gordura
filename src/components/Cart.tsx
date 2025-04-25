@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Minus, Plus, ShoppingCart, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
-export const Cart = () => {
+export const Cart = ({ onCheckout }: { onCheckout?: () => void }) => {
   const { 
     itens, 
     removerDoCarrinho, 
@@ -110,7 +110,7 @@ export const Cart = () => {
         </div>
         <button
           className="mt-4 w-full bg-brand-yellow text-white py-2 px-4 rounded-md hover:bg-brand-brown transition-colors focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:ring-offset-2"
-          onClick={() => alert('Funcionalidade de checkout em breve!')}
+          onClick={onCheckout}
         >
           Finalizar Pedido
         </button>

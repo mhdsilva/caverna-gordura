@@ -11,6 +11,7 @@ import { LoginModal } from './components/LoginModal';
 import { Produto, Review } from './types';
 import { ReviewModal } from './components/ReviewModal';
 import { RecommendationsPanel } from './components/RecommendationsPanel';
+import PaymentScreen from './components/PaymentScreen';
 
 function MainContent() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -19,6 +20,7 @@ function MainContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [categoria, setCategoria] = useState<'all' | 'hamburguer' | 'acompanhamento' | 'bebida'>('all');
   const [selectedProduct, setSelectedProduct] = useState<Produto | null>(null);
+  const [showPayment, setShowPayment] = useState(false);
   const { produtos, alternarDisponibilidade, adicionarAvaliacao } = useAdmin();
   const { speak } = useAccessibility();
 
@@ -180,7 +182,7 @@ function MainContent() {
           ))}
         </div>
 
-        {showCart && (
+        {showCart && !showPayment && (
           <div className="fixed inset-y-0 right-0 w-96 bg-white shadow-xl p-6 overflow-y-auto">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-semibold text-brand-brown">Seu Carrinho</h2>
@@ -191,7 +193,17 @@ function MainContent() {
                 ✕
               </button>
             </div>
-            <Cart />
+            <Cart onCheckout={() => setShowPayment(true)} />
+          </div>
+        )}
+        {showCart && showPayment && (
+          <div className="fixed inset-y-0 right-0 w-96 bg-white shadow-xl p-6 overflow-y-auto">
+            <PaymentScreen onPaymentSuccess={() => {
+              setShowPayment(false);
+              setShowCart(false);
+            }} onClose={() => {
+              setShowPayment(false);
+            }} />
           </div>
         )}
 

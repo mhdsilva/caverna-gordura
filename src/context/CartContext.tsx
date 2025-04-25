@@ -63,6 +63,12 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     return subtotal;
   }, [subtotal, cupomAplicado]);
 
+  const resetCarrinho = useCallback(() => {
+    setItens([]);
+    setCupomAplicado(null);
+    setErroCupom(null);
+  }, []);
+
   const value = useMemo(() => ({
     itens,
     adicionarAoCarrinho,
@@ -73,7 +79,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     aplicarCupom,
     cupomAplicado,
     erroCupom,
-  }), [itens, subtotal, total, adicionarAoCarrinho, removerDoCarrinho, atualizarQuantidade, aplicarCupom, cupomAplicado, erroCupom]);
+    resetCarrinho,
+  }), [itens, subtotal, total, adicionarAoCarrinho, removerDoCarrinho, atualizarQuantidade, aplicarCupom, cupomAplicado, erroCupom, resetCarrinho]);
 
   return (
     <CarrinhoContexto.Provider value={value}>
