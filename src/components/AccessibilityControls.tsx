@@ -4,7 +4,6 @@ import { useAccessibility } from '../context/AccessibilityContext';
 
 export const AccessibilityControls = () => {
   const { 
-    fontSize, 
     increaseFontSize, 
     decreaseFontSize,
     toggleHighContrast,

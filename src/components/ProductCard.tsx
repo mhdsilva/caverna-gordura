@@ -13,8 +13,7 @@ export const ProductCard = ({ produto, isAdmin, onToggleAvailability }: ProductC
   const { adicionarAoCarrinho } = useCart();
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden transition-all hover:scale-[1.02] hover:shadow-lg border border-brand-yellow/10"
-         role="article"
+    <article className="bg-white rounded-lg shadow-md overflow-hidden transition-all hover:scale-[1.02] hover:shadow-lg border border-brand-yellow/10"
          aria-labelledby={`produto-${produto.id}-titulo`}>
       <div className="relative">
         <img
@@ -70,6 +69,6 @@ export const ProductCard = ({ produto, isAdmin, onToggleAvailability }: ProductC
           )}
         </div>
       </div>
-    </div>
+    </article>
   );
 };
