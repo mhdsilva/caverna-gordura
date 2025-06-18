@@ -1,22 +1,24 @@
-import React, { createContext, useContext, useState } from 'react';
-import { AdminContextoTipo } from '../types';
+import React, { createContext, useContext, useState, useMemo, useCallback } from 'react';
+import { AdminContextoTipo, Produto } from '../types';
 import { produtos as produtosIniciais } from '../data/products';
 
 const AdminContexto = createContext<AdminContextoTipo | undefined>(undefined);
 
 export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
-  const [produtos, setProdutos] = useState(produtosIniciais);
+  const [produtos, setProdutos] = useState<Produto[]>(produtosIniciais);
 
-  const alternarDisponibilidade = (produtoId: string) => {
-    setProdutos(produtos.map(produto =>
+  const alternarDisponibilidade = useCallback((produtoId: string) => {
+    setProdutos(produtos.map((produto: Produto) =>
       produto.id === produtoId
         ? { ...produto, disponivel: !produto.disponivel }
         : produto
     ));
-  };
+  }, [produtos]);
+
+  const value = useMemo(() => ({ alternarDisponibilidade }), [alternarDisponibilidade]);
 
   return (
-    <AdminContexto.Provider value={{ alternarDisponibilidade }}>
+    <AdminContexto.Provider value={value}>
       {children}
     </AdminContexto.Provider>
   );

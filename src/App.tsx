@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Menu, ShoppingCart as CartIcon } from 'lucide-react';
 import { ProductCard } from './components/ProductCard';
 import { Cart } from './components/Cart';
 import { produtos } from './data/products';
 import { CartProvider } from './context/CartContext';
 import { AdminProvider, useAdmin } from './context/AdminContext';
-import { AccessibilityProvider } from './context/AccessibilityContext';
+import { AccessibilityProvider, useAccessibility } from './context/AccessibilityContext';
 import { AccessibilityControls } from './components/AccessibilityControls';
 import { LoginModal } from './components/LoginModal';
-import { useAccessibility } from './context/AccessibilityContext';
 
 function MainContent() {
   const [isAdmin, setIsAdmin] = useState(false);
