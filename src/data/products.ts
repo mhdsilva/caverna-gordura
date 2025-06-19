@@ -10,6 +10,10 @@ export const produtos: Produto[] = [
     categoria: 'hamburguer',
     disponivel: true,
     alergenos: ['glúten', 'laticínios'],
+    reviews: [
+      { id: 'rev1', author: 'João', rating: 5, comment: 'O melhor hambúrguer que já comi!' },
+      { id: 'rev2', author: 'Maria', rating: 4, comment: 'Muito bom, mas um pouco caro.' },
+    ],
   },
   {
     id: '2',
@@ -19,6 +23,9 @@ export const produtos: Produto[] = [
     imagem: 'https://images.unsplash.com/photo-1600555379765-f82335a7b1b0?auto=format&fit=crop&w=800&q=80',
     categoria: 'acompanhamento',
     disponivel: true,
+    reviews: [
+      { id: 'rev3', author: 'Pedro', rating: 5, comment: 'Super crocantes e saborosas.' },
+    ],
   },
   {
     id: '3',

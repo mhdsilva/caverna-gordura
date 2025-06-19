@@ -8,6 +8,8 @@ import { AdminProvider, useAdmin } from './context/AdminContext';
 import { AccessibilityProvider, useAccessibility } from './context/AccessibilityContext';
 import { AccessibilityControls } from './components/AccessibilityControls';
 import { LoginModal } from './components/LoginModal';
+import { Produto, Review } from './types';
+import { ReviewModal } from './components/ReviewModal';
 
 function MainContent() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -15,12 +17,29 @@ function MainContent() {
   const [showLoginModal, setShowLoginModal] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [categoria, setCategoria] = useState<'all' | 'hamburguer' | 'acompanhamento' | 'bebida'>('all');
-  const { alternarDisponibilidade } = useAdmin();
+  const [selectedProduct, setSelectedProduct] = useState<Produto | null>(null);
+  const { produtos, alternarDisponibilidade, adicionarAvaliacao } = useAdmin();
   const { speak } = useAccessibility();
 
   const produtosFiltrados = produtos.filter(
-    produto => categoria === 'all' || produto.categoria === categoria
+    (produto: Produto) => categoria === 'all' || produto.categoria === categoria
   );
+
+  const handleReviewSubmit = (review: Omit<Review, 'id'>) => {
+    if (selectedProduct) {
+      adicionarAvaliacao(selectedProduct.id, review);
+      speak('Avaliação enviada com sucesso!');
+      // Atualizar o produto selecionado para refletir a nova avaliação no modal
+      const produtoAtualizado = produtos.find((p: Produto) => p.id === selectedProduct.id);
+      if(produtoAtualizado) {
+        const novaAvaliacao = { ...review, id: `rev${Date.now()}` };
+        const reviewsAtuais = produtoAtualizado.reviews || [];
+        setSelectedProduct({ ...produtoAtualizado, reviews: [...reviewsAtuais, novaAvaliacao] });
+      } else {
+        setSelectedProduct(null);
+      }
+    }
+  };
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -136,12 +155,13 @@ function MainContent() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {produtosFiltrados.map(produto => (
+          {produtosFiltrados.map((produto: Produto) => (
             <ProductCard
               key={produto.id}
               produto={produto}
               isAdmin={isAdmin}
               onToggleAvailability={alternarDisponibilidade}
+              onSelectProduct={setSelectedProduct}
             />
           ))}
         </div>
@@ -159,6 +179,14 @@ function MainContent() {
             </div>
             <Cart />
           </div>
+        )}
+
+        {selectedProduct && (
+          <ReviewModal 
+            produto={selectedProduct}
+            onClose={() => setSelectedProduct(null)}
+            onSubmitReview={handleReviewSubmit}
+          />
         )}
       </main>
     </div>

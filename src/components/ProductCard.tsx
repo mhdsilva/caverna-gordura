@@ -2,15 +2,23 @@ import React from 'react';
 import { ShoppingCart, AlertTriangle } from 'lucide-react';
 import { Produto } from '../types';
 import { useCart } from '../context/CartContext';
+import { StarRating } from './StarRating';
 
 interface ProductCardProps {
   produto: Produto;
   isAdmin?: boolean;
   onToggleAvailability?: (id: string) => void;
+  onSelectProduct: (produto: Produto) => void;
 }
 
-export const ProductCard = ({ produto, isAdmin, onToggleAvailability }: ProductCardProps) => {
+export const ProductCard = ({ produto, isAdmin, onToggleAvailability, onSelectProduct }: ProductCardProps) => {
   const { adicionarAoCarrinho } = useCart();
+
+  const averageRating = produto.reviews && produto.reviews.length > 0
+    ? produto.reviews.reduce((acc, review) => acc + review.rating, 0) / produto.reviews.length
+    : 0;
+  
+  const reviewCount = produto.reviews?.length || 0;
 
   return (
     <article className="bg-white rounded-lg shadow-md overflow-hidden transition-all hover:scale-[1.02] hover:shadow-lg border border-brand-yellow/10"
@@ -32,6 +40,15 @@ export const ProductCard = ({ produto, isAdmin, onToggleAvailability }: ProductC
         </h3>
         <p className="mt-2 text-gray-600">{produto.descricao}</p>
         
+        <div className="mt-3">
+          <button onClick={() => onSelectProduct(produto)} className="flex items-center gap-2" aria-label={`Ver avaliações de ${produto.nome}`}>
+            <StarRating rating={averageRating} />
+            <span className="text-sm text-gray-500 hover:text-brand-brown">
+              ({reviewCount} {reviewCount === 1 ? 'avaliação' : 'avaliações'})
+            </span>
+          </button>
+        </div>
+
         {produto.alergenos && produto.alergenos.length > 0 && (
           <div className="mt-2 flex items-center gap-1 text-amber-600">
             <AlertTriangle size={16} />
