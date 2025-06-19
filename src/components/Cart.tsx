@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Minus, Plus, ShoppingCart, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 export const Cart = () => {
-  const { itens, removerDoCarrinho, atualizarQuantidade, total } = useCart();
+  const { 
+    itens, 
+    removerDoCarrinho, 
+    atualizarQuantidade, 
+    subtotal, 
+    total,
+    aplicarCupom,
+    cupomAplicado,
+    erroCupom,
+  } = useCart();
+  const [codigoCupom, setCodigoCupom] = useState('');
 
   if (itens.length === 0) {
     return (
@@ -54,9 +64,49 @@ export const Cart = () => {
         </div>
       ))}
       <div className="py-4">
-        <div className="flex justify-between items-center font-medium text-brand-brown">
-          <span>Total</span>
-          <span>R$ {total.toFixed(2)}</span>
+        <div className="flex flex-col gap-2">
+          <label htmlFor="coupon-code" className="text-sm font-medium text-gray-700">
+            Cupom de Desconto
+          </label>
+          <div className="flex gap-2">
+            <input
+              id="coupon-code"
+              type="text"
+              value={codigoCupom}
+              onChange={(e) => setCodigoCupom(e.target.value)}
+              placeholder="Digite seu cupom"
+              className="flex-1 p-2 border border-gray-300 rounded-md focus:ring-brand-yellow focus:border-brand-yellow"
+            />
+            <button
+              onClick={() => aplicarCupom(codigoCupom)}
+              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
+            >
+              Aplicar
+            </button>
+          </div>
+          {erroCupom && <p className="text-sm text-red-600 mt-1">{erroCupom}</p>}
+          {cupomAplicado && !erroCupom && (
+            <p className="text-sm text-green-600 mt-1">
+              Cupom "{cupomAplicado.code}" aplicado com sucesso!
+            </p>
+          )}
+        </div>
+        
+        <div className="mt-4 space-y-2">
+          <div className="flex justify-between items-center text-brand-brown">
+            <span>Subtotal</span>
+            <span>R$ {subtotal.toFixed(2)}</span>
+          </div>
+          {cupomAplicado && (
+            <div className="flex justify-between items-center text-green-600">
+              <span>Desconto ({cupomAplicado.code})</span>
+              <span>- R$ {(subtotal - total).toFixed(2)}</span>
+            </div>
+          )}
+          <div className="flex justify-between items-center font-bold text-lg text-brand-brown">
+            <span>Total</span>
+            <span>R$ {total.toFixed(2)}</span>
+          </div>
         </div>
         <button
           className="mt-4 w-full bg-brand-yellow text-white py-2 px-4 rounded-md hover:bg-brand-brown transition-colors focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:ring-offset-2"
