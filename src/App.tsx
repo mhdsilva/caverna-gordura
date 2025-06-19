@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Menu, ShoppingCart as CartIcon } from 'lucide-react';
 import { ProductCard } from './components/ProductCard';
 import { Cart } from './components/Cart';
@@ -10,6 +10,7 @@ import { AccessibilityControls } from './components/AccessibilityControls';
 import { LoginModal } from './components/LoginModal';
 import { Produto, Review } from './types';
 import { ReviewModal } from './components/ReviewModal';
+import { RecommendationsPanel } from './components/RecommendationsPanel';
 
 function MainContent() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -20,6 +21,17 @@ function MainContent() {
   const [selectedProduct, setSelectedProduct] = useState<Produto | null>(null);
   const { produtos, alternarDisponibilidade, adicionarAvaliacao } = useAdmin();
   const { speak } = useAccessibility();
+
+  const recommendedProducts = useMemo(() => {
+    const calculateAverageRating = (reviews: Review[] | undefined) => {
+      if (!reviews || reviews.length === 0) return 0;
+      return reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
+    };
+
+    return [...produtos]
+      .sort((a, b) => calculateAverageRating(b.reviews) - calculateAverageRating(a.reviews))
+      .slice(0, 5);
+  }, [produtos]);
 
   const produtosFiltrados = produtos.filter(
     (produto: Produto) => categoria === 'all' || produto.categoria === categoria
@@ -99,6 +111,8 @@ function MainContent() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <RecommendationsPanel produtos={recommendedProducts} onSelectProduct={setSelectedProduct} />
+
         <div className="mb-8 flex flex-wrap gap-4">
           <button
             onClick={() => {
