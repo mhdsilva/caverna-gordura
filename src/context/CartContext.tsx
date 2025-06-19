@@ -1,10 +1,13 @@
 import React, { createContext, useContext, useState, useMemo, useCallback } from 'react';
-import { CarrinhoContextoTipo, ItemCarrinho, Produto } from '../types';
+import { CarrinhoContextoTipo, ItemCarrinho, Produto, Coupon } from '../types';
+import { coupons } from '../data/coupons';
 
 const CarrinhoContexto = createContext<CarrinhoContextoTipo | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [itens, setItens] = useState<ItemCarrinho[]>([]);
+  const [cupomAplicado, setCupomAplicado] = useState<Coupon | null>(null);
+  const [erroCupom, setErroCupom] = useState<string | null>(null);
 
   const adicionarAoCarrinho = useCallback((produto: Produto) => {
     setItens((itensAtuais: ItemCarrinho[]) => {
@@ -36,19 +39,41 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     ));
   }, [removerDoCarrinho]);
 
-  const total = useMemo(() =>
+  const aplicarCupom = useCallback((codigo: string) => {
+    const cupomEncontrado = coupons.find(c => c.code === codigo.toUpperCase());
+    if (cupomEncontrado) {
+      setCupomAplicado(cupomEncontrado);
+      setErroCupom(null);
+    } else {
+      setCupomAplicado(null);
+      setErroCupom('Cupom inválido ou expirado.');
+    }
+  }, []);
+
+  const subtotal = useMemo(() =>
     itens.reduce(
       (soma: number, item: ItemCarrinho) => soma + item.produto.preco * item.quantidade,
       0
     ), [itens]);
+
+  const total = useMemo(() => {
+    if (cupomAplicado) {
+      return subtotal * (1 - cupomAplicado.discount);
+    }
+    return subtotal;
+  }, [subtotal, cupomAplicado]);
 
   const value = useMemo(() => ({
     itens,
     adicionarAoCarrinho,
     removerDoCarrinho,
     atualizarQuantidade,
-    total
-  }), [itens, total, adicionarAoCarrinho, removerDoCarrinho, atualizarQuantidade]);
+    subtotal,
+    total,
+    aplicarCupom,
+    cupomAplicado,
+    erroCupom,
+  }), [itens, subtotal, total, adicionarAoCarrinho, removerDoCarrinho, atualizarQuantidade, aplicarCupom, cupomAplicado, erroCupom]);
 
   return (
     <CarrinhoContexto.Provider value={value}>
