@@ -7,6 +7,7 @@ export interface Produto {
   categoria: 'hamburguer' | 'acompanhamento' | 'bebida';
   disponivel: boolean;
   alergenos?: string[];
+  reviews?: Review[];
 }
 
 export interface Coupon {
@@ -20,7 +21,9 @@ export interface ItemCarrinho {
 }
 
 export interface AdminContextoTipo {
+  produtos: Produto[];
   alternarDisponibilidade: (produtoId: string) => void;
+  adicionarAvaliacao: (produtoId: string, review: Omit<Review, 'id'>) => void;
 }
 
 export interface CarrinhoContextoTipo {
@@ -33,4 +36,11 @@ export interface CarrinhoContextoTipo {
   aplicarCupom: (codigo: string) => void;
   cupomAplicado: Coupon | null;
   erroCupom: string | null;
+}
+
+export interface Review {
+  id: string;
+  author: string;
+  rating: number; // 1-5
+  comment: string;
 }
