@@ -93,8 +93,9 @@ const PaymentScreen = ({ onPaymentSuccess, onClose }: { onPaymentSuccess?: () =>
       </div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Nome no cartão</label>
+          <label htmlFor="nome-cartao" className="block text-sm font-medium text-gray-700 mb-1">Nome no cartão</label>
           <input
+            id="nome-cartao"
             type="text"
             value={nome}
             onChange={e => setNome(e.target.value)}
@@ -103,8 +104,9 @@ const PaymentScreen = ({ onPaymentSuccess, onClose }: { onPaymentSuccess?: () =>
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Número do cartão</label>
+          <label htmlFor="numero-cartao" className="block text-sm font-medium text-gray-700 mb-1">Número do cartão</label>
           <input
+            id="numero-cartao"
             type="text"
             value={numeroCartao}
             onChange={e => setNumeroCartao(e.target.value)}
@@ -118,8 +120,9 @@ const PaymentScreen = ({ onPaymentSuccess, onClose }: { onPaymentSuccess?: () =>
         </div>
         <div className="flex gap-4">
           <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Validade</label>
+            <label htmlFor="validade-cartao" className="block text-sm font-medium text-gray-700 mb-1">Validade</label>
             <input
+              id="validade-cartao"
               type="text"
               value={validade}
               onChange={e => setValidade(e.target.value)}
@@ -131,8 +134,9 @@ const PaymentScreen = ({ onPaymentSuccess, onClose }: { onPaymentSuccess?: () =>
             />
           </div>
           <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">CVV</label>
+            <label htmlFor="cvv-cartao" className="block text-sm font-medium text-gray-700 mb-1">CVV</label>
             <input
+              id="cvv-cartao"
               type="password"
               value={cvv}
               onChange={e => setCvv(e.target.value)}
