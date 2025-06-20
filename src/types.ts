@@ -36,6 +36,7 @@ export interface CarrinhoContextoTipo {
   aplicarCupom: (codigo: string) => void;
   cupomAplicado: Coupon | null;
   erroCupom: string | null;
+  resetCarrinho: () => void;
 }
 
 export interface Review {
