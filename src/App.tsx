@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Menu, ShoppingCart as CartIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { ProductCard } from './components/ProductCard';
 import { Cart } from './components/Cart';
 import { produtos } from './data/products';
@@ -14,6 +15,7 @@ import { RecommendationsPanel } from './components/RecommendationsPanel';
 import PaymentScreen from './components/PaymentScreen';
 
 function MainContent() {
+  const { t, i18n } = useTranslation();
   const [isAdmin, setIsAdmin] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(true);
@@ -42,7 +44,7 @@ function MainContent() {
   const handleReviewSubmit = (review: Omit<Review, 'id'>) => {
     if (selectedProduct) {
       adicionarAvaliacao(selectedProduct.id, review);
-      speak('Avaliação enviada com sucesso!');
+      speak(t('reviewSuccess'));
       // Atualizar o produto selecionado para refletir a nova avaliação no modal
       const produtoAtualizado = produtos.find((p: Produto) => p.id === selectedProduct.id);
       if(produtoAtualizado) {
@@ -58,12 +60,12 @@ function MainContent() {
   const handleLogin = () => {
     setIsLoggedIn(true);
     setShowLoginModal(false);
-    speak('Login realizado com sucesso');
+    speak(t('loginSuccess'));
   };
 
   const handleContinueWithoutLogin = () => {
     setShowLoginModal(false);
-    speak('Continuando sem login');
+    speak(t('continueWithoutLogin'));
   };
 
   return (
@@ -81,29 +83,44 @@ function MainContent() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <Menu className="h-6 w-6 text-brand-yellow" />
-              <h1 className="ml-4 text-xl font-bold text-brand-yellow">Caverna da Gordura</h1>
+              <h1 className="ml-4 text-xl font-bold text-brand-yellow">{t('appName')}</h1>
             </div>
             <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => i18n.changeLanguage('pt')}
+                  className={`text-sm font-bold ${i18n.language === 'pt' ? 'text-brand-yellow' : 'text-white/70'}`}
+                >
+                  PT
+                </button>
+                <span className="text-white/70">|</span>
+                <button
+                  onClick={() => i18n.changeLanguage('en')}
+                  className={`text-sm font-bold ${i18n.language === 'en' ? 'text-brand-yellow' : 'text-white/70'}`}
+                >
+                  EN
+                </button>
+              </div>
               <AccessibilityControls />
               {isLoggedIn ? (
                 <button
                   onClick={() => setIsAdmin(!isAdmin)}
                   className="text-sm text-brand-yellow hover:text-brand-brown transition-colors"
                 >
-                  {isAdmin ? 'Sair do Modo Admin' : 'Modo Admin'}
+                  {isAdmin ? t('logoutAdmin') : t('loginAdmin')}
                 </button>
               ) : (
                 <button
                   onClick={() => setShowLoginModal(true)}
                   className="text-sm text-brand-yellow hover:text-brand-brown transition-colors"
                 >
-                  Login
+                  {t('login')}
                 </button>
               )}
               <button
                 onClick={() => setShowCart(!showCart)}
                 className="relative p-2 text-brand-yellow hover:text-brand-brown transition-colors"
-                aria-label="Carrinho de compras"
+                aria-label={t('cart')}
               >
                 <CartIcon className="h-6 w-6" />
               </button>
@@ -119,7 +136,7 @@ function MainContent() {
           <button
             onClick={() => {
               setCategoria('all');
-              speak('Mostrando todos os produtos');
+              speak(t('showingAllProducts'));
             }}
             className={`px-4 py-2 rounded-md transition-colors ${
               categoria === 'all'
@@ -127,12 +144,12 @@ function MainContent() {
                 : 'bg-white text-brand-brown hover:bg-brand-yellow/10'
             }`}
           >
-            Todos
+            {t('all')}
           </button>
           <button
             onClick={() => {
               setCategoria('hamburguer');
-              speak('Mostrando hambúrgueres');
+              speak(t('showingHamburgers'));
             }}
             className={`px-4 py-2 rounded-md transition-colors ${
               categoria === 'hamburguer'
@@ -140,12 +157,12 @@ function MainContent() {
                 : 'bg-white text-brand-brown hover:bg-brand-yellow/10'
             }`}
           >
-            Hambúrgueres
+            {t('hamburgers')}
           </button>
           <button
             onClick={() => {
               setCategoria('acompanhamento');
-              speak('Mostrando acompanhamentos');
+              speak(t('showingSides'));
             }}
             className={`px-4 py-2 rounded-md transition-colors ${
               categoria === 'acompanhamento'
@@ -153,12 +170,12 @@ function MainContent() {
                 : 'bg-white text-brand-brown hover:bg-brand-yellow/10'
             }`}
           >
-            Acompanhamentos
+            {t('sides')}
           </button>
           <button
             onClick={() => {
               setCategoria('bebida');
-              speak('Mostrando bebidas');
+              speak(t('showingDrinks'));
             }}
             className={`px-4 py-2 rounded-md transition-colors ${
               categoria === 'bebida'
@@ -166,7 +183,7 @@ function MainContent() {
                 : 'bg-white text-brand-brown hover:bg-brand-yellow/10'
             }`}
           >
-            Bebidas
+            {t('drinks')}
           </button>
         </div>
 
@@ -185,7 +202,7 @@ function MainContent() {
         {showCart && !showPayment && (
           <div className="fixed inset-y-0 right-0 w-96 bg-white shadow-xl p-6 overflow-y-auto">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold text-brand-brown">Seu Carrinho</h2>
+              <h2 className="text-xl font-semibold text-brand-brown">{t('yourCart')}</h2>
               <button
                 onClick={() => setShowCart(false)}
                 className="text-brand-brown hover:text-brand-black transition-colors"
