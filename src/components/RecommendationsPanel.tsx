@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Produto } from '../types';
 import { ProductCard } from './ProductCard';
 
@@ -12,6 +13,7 @@ export const RecommendationsPanel = ({ produtos, onSelectProduct }: Recommendati
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const { t } = useTranslation();
 
   const checkScrollability = () => {
     const el = scrollContainerRef.current;
@@ -48,13 +50,13 @@ export const RecommendationsPanel = ({ produtos, onSelectProduct }: Recommendati
 
   return (
     <div className="mb-12 relative">
-      <h2 className="text-3xl font-bold text-brand-brown mb-6 text-center">Nossas Recomendações</h2>
+      <h2 className="text-3xl font-bold text-brand-brown mb-6 text-center">{t('recommendations')}</h2>
       
       {canScrollLeft && (
         <button
           onClick={() => scroll('left')}
           className="absolute left-0 top-1/2 z-10 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition-transform transform -translate-y-1/2 -translate-x-4"
-          aria-label="Anterior"
+          aria-label={t('previous')}
         >
           <ChevronLeft className="text-brand-brown" />
         </button>
@@ -78,7 +80,7 @@ export const RecommendationsPanel = ({ produtos, onSelectProduct }: Recommendati
         <button
           onClick={() => scroll('right')}
           className="absolute right-0 top-1/2 z-10 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition-transform transform -translate-y-1/2 translate-x-4"
-          aria-label="Próximo"
+          aria-label={t('next')}
         >
           <ChevronRight className="text-brand-brown" />
         </button>
