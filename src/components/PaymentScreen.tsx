@@ -97,6 +97,7 @@ const PaymentScreen = ({ onPaymentSuccess, onClose }: { onPaymentSuccess?: () =>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">{t('cardName')}</label>
           <input
+            id="nome-cartao"
             type="text"
             value={nome}
             onChange={e => setNome(e.target.value)}
@@ -107,6 +108,7 @@ const PaymentScreen = ({ onPaymentSuccess, onClose }: { onPaymentSuccess?: () =>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">{t('cardNumber')}</label>
           <input
+            id="numero-cartao"
             type="text"
             value={numeroCartao}
             onChange={e => setNumeroCartao(e.target.value)}
@@ -122,6 +124,7 @@ const PaymentScreen = ({ onPaymentSuccess, onClose }: { onPaymentSuccess?: () =>
           <div className="flex-1">
             <label className="block text-sm font-medium text-gray-700 mb-1">{t('expiryDate')}</label>
             <input
+              id="validade-cartao"
               type="text"
               value={validade}
               onChange={e => setValidade(e.target.value)}
@@ -135,6 +138,7 @@ const PaymentScreen = ({ onPaymentSuccess, onClose }: { onPaymentSuccess?: () =>
           <div className="flex-1">
             <label className="block text-sm font-medium text-gray-700 mb-1">{t('cvv')}</label>
             <input
+              id="cvv-cartao"
               type="password"
               value={cvv}
               onChange={e => setCvv(e.target.value)}
