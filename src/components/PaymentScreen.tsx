@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
+import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 
 const PaymentScreen = ({ onPaymentSuccess, onClose }: { onPaymentSuccess?: () => void, onClose?: () => void }) => {
@@ -9,6 +10,7 @@ const PaymentScreen = ({ onPaymentSuccess, onClose }: { onPaymentSuccess?: () =>
   const [validade, setValidade] = useState('');
   const [cvv, setCvv] = useState('');
   const [pagamentoRealizado, setPagamentoRealizado] = useState(false);
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -40,7 +42,7 @@ const PaymentScreen = ({ onPaymentSuccess, onClose }: { onPaymentSuccess?: () =>
   if (itens.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-500">Seu carrinho está vazio.</p>
+        <p className="text-gray-500">{t('emptyCartMessage')}</p>
       </div>
     );
   }
@@ -48,8 +50,8 @@ const PaymentScreen = ({ onPaymentSuccess, onClose }: { onPaymentSuccess?: () =>
   if (pagamentoRealizado) {
     return (
       <div className="text-center py-8">
-        <h2 className="text-2xl font-bold text-green-600 mb-4">Pedido feito e pago!</h2>
-        <p className="text-brand-brown">Obrigado pela sua compra.</p>
+        <h2 className="text-2xl font-bold text-green-600 mb-4">{t('orderPaid')}</h2>
+        <p className="text-brand-brown">{t('thankYou')}</p>
       </div>
     );
   }
@@ -60,40 +62,40 @@ const PaymentScreen = ({ onPaymentSuccess, onClose }: { onPaymentSuccess?: () =>
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-brand-brown hover:text-brand-black transition-colors"
-          aria-label="Fechar pagamento"
+          aria-label={t('closePayment')}
         >
           <X size={24} />
         </button>
       )}
-      <h2 className="text-2xl font-bold text-brand-brown mb-6">Pagamento</h2>
+      <h2 className="text-2xl font-bold text-brand-brown mb-6">{t('payment')}</h2>
       <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-2 text-brand-brown">Resumo do Pedido</h3>
+        <h3 className="text-lg font-semibold mb-2 text-brand-brown">{t('orderSummary')}</h3>
         <ul className="divide-y divide-gray-200 mb-4">
           {itens.map(({ produto, quantidade }) => (
             <li key={produto.id} className="py-2 flex justify-between items-center">
-              <span>{produto.nome} x{quantidade}</span>
-              <span>R$ {(produto.preco * quantidade).toFixed(2)}</span>
+              <span>{produto.nome[i18n.language || 'pt']} x{quantidade}</span>
+              <span>{t('currency')} {(produto.preco * quantidade).toFixed(2)}</span>
             </li>
           ))}
         </ul>
         <div className="flex justify-between text-brand-brown">
-          <span>Subtotal</span>
-          <span>R$ {subtotal.toFixed(2)}</span>
+          <span>{t('subtotal')}</span>
+          <span>{t('currency')} {subtotal.toFixed(2)}</span>
         </div>
         {cupomAplicado && (
           <div className="flex justify-between text-green-600">
-            <span>Desconto ({cupomAplicado.code})</span>
-            <span>- R$ {(subtotal - total).toFixed(2)}</span>
+            <span>{t('discount', { couponCode: cupomAplicado.code })}</span>
+            <span>- {t('currency')} {(subtotal - total).toFixed(2)}</span>
           </div>
         )}
         <div className="flex justify-between font-bold text-lg text-brand-brown mt-2">
-          <span>Total</span>
-          <span>R$ {total.toFixed(2)}</span>
+          <span>{t('total')}</span>
+          <span>{t('currency')} {total.toFixed(2)}</span>
         </div>
       </div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="nome-cartao" className="block text-sm font-medium text-gray-700 mb-1">Nome no cartão</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t('cardName')}</label>
           <input
             id="nome-cartao"
             type="text"
@@ -104,7 +106,7 @@ const PaymentScreen = ({ onPaymentSuccess, onClose }: { onPaymentSuccess?: () =>
           />
         </div>
         <div>
-          <label htmlFor="numero-cartao" className="block text-sm font-medium text-gray-700 mb-1">Número do cartão</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t('cardNumber')}</label>
           <input
             id="numero-cartao"
             type="text"
@@ -120,7 +122,7 @@ const PaymentScreen = ({ onPaymentSuccess, onClose }: { onPaymentSuccess?: () =>
         </div>
         <div className="flex gap-4">
           <div className="flex-1">
-            <label htmlFor="validade-cartao" className="block text-sm font-medium text-gray-700 mb-1">Validade</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('expiryDate')}</label>
             <input
               id="validade-cartao"
               type="text"
@@ -134,7 +136,7 @@ const PaymentScreen = ({ onPaymentSuccess, onClose }: { onPaymentSuccess?: () =>
             />
           </div>
           <div className="flex-1">
-            <label htmlFor="cvv-cartao" className="block text-sm font-medium text-gray-700 mb-1">CVV</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('cvv')}</label>
             <input
               id="cvv-cartao"
               type="password"
@@ -153,7 +155,7 @@ const PaymentScreen = ({ onPaymentSuccess, onClose }: { onPaymentSuccess?: () =>
           className="w-full bg-brand-yellow text-white py-2 px-4 rounded-md hover:bg-brand-brown transition-colors font-semibold"
           disabled={!isFormValid()}
         >
-          Pagar
+          {t('pay')}
         </button>
       </form>
     </div>

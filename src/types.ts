@@ -1,7 +1,7 @@
 export interface Produto {
   id: string;
-  nome: string;
-  descricao: string;
+  nome: { [key: string]: string };
+  descricao: { [key: string]: string };
   preco: number;
   imagem: string;
   categoria: 'hamburguer' | 'acompanhamento' | 'bebida';
