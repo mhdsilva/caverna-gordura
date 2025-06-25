@@ -32,7 +32,7 @@ jobs:
       - name: Rodar Linter e Verificador de Formato
         run: |
           # O comando 'npx' executa os pacotes sem precisar instalar globalmente
-          npx eslint . --ext .ts,.tsx
+          npx eslint .
           npx prettier --check .
         # Dica: Configure scripts no seu package.json para simplificar:
         # "lint": "eslint . --ext .ts,.tsx", "format-check": "prettier --check ."
