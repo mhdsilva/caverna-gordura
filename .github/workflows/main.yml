@@ -1,0 +1,47 @@
+# .github/workflows/quality.yml
+
+name: Verificação de Qualidade do Código
+
+# Gatilhos: Roda em qualquer push ou pull request
+on:
+  push:
+  pull_request:
+
+jobs:
+  # Nome do job
+  verify-quality:
+    name: Lint, Teste e Build
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Faz o checkout do código do seu repositório
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      # 2. Configura o ambiente Node.js na versão correta
+      - name: Setup do Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Ou a versão que seu projeto usa
+
+      # 3. Instala todas as dependências do projeto
+      - name: Instalação das dependências
+        run: npm install
+
+      # 4. Roda o Linter (ESLint) e o Verificador de Formato (Prettier)
+      - name: Rodar Linter e Verificador de Formato
+        run: |
+          # O comando 'npx' executa os pacotes sem precisar instalar globalmente
+          npx eslint . --ext .ts,.tsx
+          npx prettier --check .
+        # Dica: Configure scripts no seu package.json para simplificar:
+        # "lint": "eslint . --ext .ts,.tsx", "format-check": "prettier --check ."
+        # E aqui você rodaria 'npm run lint' e 'npm run format-check'
+
+      # 5. Roda os testes automatizados (essencial para a qualidade)
+      - name: Rodar Testes
+        run: npm test
+
+      # 6. Verifica se o build de produção está funcionando
+      - name: Rodar Build de Produção
+        run: npm run build
