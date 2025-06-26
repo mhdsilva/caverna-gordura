@@ -3,7 +3,6 @@ import { Menu, ShoppingCart as CartIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ProductCard } from './components/ProductCard';
 import { Cart } from './components/Cart';
-import { produtos } from './data/products';
 import { CartProvider } from './context/CartContext';
 import { AdminProvider, useAdmin } from './context/AdminContext';
 import { AccessibilityProvider, useAccessibility } from './context/AccessibilityContext';
