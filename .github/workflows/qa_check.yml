@@ -48,7 +48,7 @@ jobs:
 
       # 7. Upload do relatório de cobertura
       - name: Upload do Relatório de Cobertura
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: coverage/
