@@ -71,7 +71,9 @@ export const ProductCard = ({
           <div className="mt-2 flex items-center gap-1 text-amber-600">
             <AlertTriangle size={16} />
             <span className="text-sm">
-              {t("contains")} {produto.alergenos.map((a) => t(a)).join(", ")}
+              {t("contains", {
+                allergens: produto.alergenos.map((a) => t(a)).join(", "),
+              })}
             </span>
           </div>
         )}

@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
+import "@testing-library/jest-dom";
 import { RecommendationsPanel } from "../components/RecommendationsPanel";
 import { Produto } from "../types";
 import { CartProvider } from "../context/CartContext";
@@ -8,9 +9,9 @@ describe("RecommendationsPanel", () => {
   const produtos: Produto[] = [
     {
       id: "1",
-      nome: "Test",
+      nome: { pt: "Produto Teste", en: "Test Product" },
       preco: 10,
-      descricao: "Descrição do produto",
+      descricao: { pt: "Descrição do produto", en: "Product description" },
       imagem: "",
       categoria: "hamburguer",
       disponivel: true,
@@ -27,7 +28,7 @@ describe("RecommendationsPanel", () => {
     renderWithCartProvider(
       <RecommendationsPanel produtos={produtos} onSelectProduct={vi.fn()} />,
     );
-    expect(screen.getByText("Test")).toBeInTheDocument();
+    expect(screen.getByText("Produto Teste")).toBeInTheDocument();
     expect(screen.getByText("Descrição do produto")).toBeInTheDocument();
   });
 
@@ -40,7 +41,7 @@ describe("RecommendationsPanel", () => {
       />,
     );
     // Click the review button (which is the only clickable in ProductCard)
-    screen.getAllByLabelText(/ver avaliações/i)[0].click();
+    screen.getByLabelText("Ver avaliações de Produto Teste").click();
     expect(onSelectProduct).toHaveBeenCalledWith(produtos[0]);
   });
 });

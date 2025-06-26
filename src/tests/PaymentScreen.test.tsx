@@ -1,7 +1,10 @@
-import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import PaymentScreen from "../components/PaymentScreen";
 import * as CartContext from "../context/CartContext";
+
+vi.mock("../context/CartContext");
 
 describe("PaymentScreen", () => {
   it("renders cart items and handles payment", () => {
@@ -10,9 +13,9 @@ describe("PaymentScreen", () => {
         {
           produto: {
             id: "1",
-            nome: "Test",
+            nome: { pt: "Produto Teste", en: "Test Product" },
             preco: 10,
-            descricao: "",
+            descricao: { pt: "Descrição Teste", en: "Test Description" },
             imagem: "",
             categoria: "hamburguer",
             disponivel: true,
@@ -32,10 +35,8 @@ describe("PaymentScreen", () => {
     });
     const onClose = vi.fn();
     render(<PaymentScreen onClose={onClose} />);
-    expect(
-      screen.getByText((content) => content.includes("Test")),
-    ).toBeInTheDocument();
-    expect(screen.getByLabelText(/número do cartão/i)).toBeInTheDocument();
+    expect(screen.getByText("Produto Teste x1")).toBeInTheDocument();
+    expect(screen.getByLabelText("Número do cartão")).toBeInTheDocument();
   });
 
   it("shows empty cart message if no items", () => {
@@ -52,19 +53,19 @@ describe("PaymentScreen", () => {
       resetCarrinho: vi.fn(),
     });
     render(<PaymentScreen onClose={vi.fn()} />);
-    expect(screen.getByText(/carrinho está vazio/i)).toBeInTheDocument();
+    expect(screen.getByText("Seu carrinho está vazio.")).toBeInTheDocument();
   });
 
-  it("submits payment and shows success message", () => {
+  it("submits payment and shows success message", async () => {
     const resetCarrinho = vi.fn();
     vi.spyOn(CartContext, "useCart").mockReturnValue({
       itens: [
         {
           produto: {
             id: "1",
-            nome: "Test",
+            nome: { pt: "Produto Teste", en: "Test Product" },
             preco: 10,
-            descricao: "",
+            descricao: { pt: "Descrição Teste", en: "Test Description" },
             imagem: "",
             categoria: "hamburguer",
             disponivel: true,
@@ -83,20 +84,22 @@ describe("PaymentScreen", () => {
       resetCarrinho,
     });
     render(<PaymentScreen onClose={vi.fn()} />);
-    fireEvent.change(screen.getByLabelText(/nome no cartão/i), {
+    fireEvent.change(screen.getByLabelText("Nome no cartão"), {
       target: { value: "Nome Teste" },
     });
-    fireEvent.change(screen.getByLabelText(/número do cartão/i), {
+    fireEvent.change(screen.getByLabelText("Número do cartão"), {
       target: { value: "1234567812345678" },
     });
-    fireEvent.change(screen.getByLabelText(/validade/i), {
+    fireEvent.change(screen.getByLabelText("Data de validade"), {
       target: { value: "12/34" },
     });
-    fireEvent.change(screen.getByLabelText(/cvv/i), {
+    fireEvent.change(screen.getByLabelText("CVV"), {
       target: { value: "123" },
     });
-    fireEvent.click(screen.getByText(/pagar/i));
-    expect(screen.getByText(/pedido feito e pago/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByText("Pagar"));
+    expect(
+      await screen.findByText("Pedido pago com sucesso!"),
+    ).toBeInTheDocument();
     expect(resetCarrinho).toHaveBeenCalled();
   });
 });

@@ -120,7 +120,10 @@ const PaymentScreen = ({
       </div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="nome-cartao"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             {t("cardName")}
           </label>
           <input
@@ -133,7 +136,10 @@ const PaymentScreen = ({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="numero-cartao"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             {t("cardNumber")}
           </label>
           <input
@@ -151,7 +157,10 @@ const PaymentScreen = ({
         </div>
         <div className="flex gap-4">
           <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="validade-cartao"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               {t("expiryDate")}
             </label>
             <input
@@ -167,7 +176,10 @@ const PaymentScreen = ({
             />
           </div>
           <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="cvv-cartao"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               {t("cvv")}
             </label>
             <input

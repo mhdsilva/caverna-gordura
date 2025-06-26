@@ -1,74 +1,95 @@
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, beforeEach, vi } from "vitest";
 import "@testing-library/jest-dom";
 import { AccessibilityControls } from "../components/AccessibilityControls";
-import * as AccessibilityContext from "../context/AccessibilityContext";
+import {
+  AccessibilityContext,
+  AccessibilityProvider,
+} from "../context/AccessibilityContext";
+import type { AccessibilityContextType } from "../context/AccessibilityContext";
+
+const speak = vi.fn();
+const increaseFontSize = vi.fn();
+const decreaseFontSize = vi.fn();
+const toggleHighContrast = vi.fn();
+const toggleSpeech = vi.fn();
+
+const mockAccessibilityContext: AccessibilityContextType = {
+  fontSize: 16,
+  isHighContrast: false,
+  isSpeechEnabled: false,
+  speak,
+  increaseFontSize,
+  decreaseFontSize,
+  toggleHighContrast,
+  toggleSpeech,
+};
+
+const renderWithContext = (
+  ui: React.ReactElement,
+  providerProps?: Partial<AccessibilityContextType>,
+) => {
+  return render(
+    <AccessibilityContext.Provider
+      value={{ ...mockAccessibilityContext, ...providerProps }}
+    >
+      {ui}
+    </AccessibilityContext.Provider>,
+  );
+};
 
 describe("AccessibilityControls", () => {
   beforeEach(() => {
-    vi.spyOn(AccessibilityContext, "useAccessibility").mockReturnValue({
-      increaseFontSize: vi.fn(),
-      decreaseFontSize: vi.fn(),
-      toggleHighContrast: vi.fn(),
-      isHighContrast: false,
-      toggleSpeech: vi.fn(),
-      isSpeechEnabled: false,
-      fontSize: 16,
-      speak: vi.fn(),
-    });
+    vi.clearAllMocks();
   });
 
-  it("renders all control buttons", () => {
-    render(<AccessibilityControls />);
-    expect(screen.getByLabelText("Diminuir fonte")).toBeInTheDocument();
+  it("renders all buttons", () => {
+    renderWithContext(<AccessibilityControls />);
     expect(screen.getByLabelText("Aumentar fonte")).toBeInTheDocument();
+    expect(screen.getByLabelText("Diminuir fonte")).toBeInTheDocument();
     expect(
       screen.getByLabelText("Alternar alto contraste"),
     ).toBeInTheDocument();
-    expect(screen.getByLabelText("Alternar narração")).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Ativar/desativar narração"),
+    ).toBeInTheDocument();
   });
 
   it("calls context functions on button click", () => {
-    const increaseFontSize = vi.fn();
-    const decreaseFontSize = vi.fn();
-    const toggleHighContrast = vi.fn();
-    const toggleSpeech = vi.fn();
-    vi.spyOn(AccessibilityContext, "useAccessibility").mockReturnValue({
-      increaseFontSize,
-      decreaseFontSize,
-      toggleHighContrast,
-      isHighContrast: false,
-      toggleSpeech,
-      isSpeechEnabled: false,
-      fontSize: 16,
-      speak: vi.fn(),
-    });
-    render(<AccessibilityControls />);
-    fireEvent.click(screen.getByLabelText("Diminuir fonte"));
+    renderWithContext(<AccessibilityControls />);
     fireEvent.click(screen.getByLabelText("Aumentar fonte"));
-    fireEvent.click(screen.getByLabelText("Alternar alto contraste"));
-    fireEvent.click(screen.getByLabelText("Alternar narração"));
-    expect(decreaseFontSize).toHaveBeenCalled();
     expect(increaseFontSize).toHaveBeenCalled();
+    fireEvent.click(screen.getByLabelText("Diminuir fonte"));
+    expect(decreaseFontSize).toHaveBeenCalled();
+    fireEvent.click(screen.getByLabelText("Alternar alto contraste"));
     expect(toggleHighContrast).toHaveBeenCalled();
+    fireEvent.click(screen.getByLabelText("Ativar/desativar narração"));
     expect(toggleSpeech).toHaveBeenCalled();
   });
 
+  it("calls speak on button hover", () => {
+    renderWithContext(<AccessibilityControls />, { isSpeechEnabled: true });
+    fireEvent.mouseEnter(screen.getByLabelText("Aumentar fonte"));
+    expect(speak).toHaveBeenCalledWith("Aumentar fonte");
+  });
+
   it("applies correct style for high contrast and speech enabled", () => {
-    vi.spyOn(AccessibilityContext, "useAccessibility").mockReturnValue({
-      increaseFontSize: vi.fn(),
-      decreaseFontSize: vi.fn(),
-      toggleHighContrast: vi.fn(),
+    const { rerender } = renderWithContext(<AccessibilityControls />, {
       isHighContrast: true,
-      toggleSpeech: vi.fn(),
-      isSpeechEnabled: true,
-      fontSize: 16,
-      speak: vi.fn(),
     });
-    render(<AccessibilityControls />);
-    const highContrastBtn = screen.getByLabelText("Alternar alto contraste");
-    const speechBtn = screen.getByLabelText("Alternar narração");
-    expect(highContrastBtn).toHaveClass("text-brand-brown");
-    expect(speechBtn).toHaveClass("text-brand-brown");
+    expect(screen.getByLabelText("Alternar alto contraste")).toHaveClass(
+      "bg-brand-yellow",
+    );
+
+    rerender(
+      <AccessibilityContext.Provider
+        value={{ ...mockAccessibilityContext, isSpeechEnabled: true }}
+      >
+        <AccessibilityControls />
+      </AccessibilityContext.Provider>,
+    );
+    expect(screen.getByLabelText("Ativar/desativar narração")).toHaveClass(
+      "bg-brand-yellow",
+    );
   });
 });

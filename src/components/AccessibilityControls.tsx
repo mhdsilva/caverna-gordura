@@ -11,8 +11,13 @@ export const AccessibilityControls = () => {
     isHighContrast,
     toggleSpeech,
     isSpeechEnabled,
+    speak,
   } = useAccessibility();
   const { t } = useTranslation();
+
+  const handleMouseEnter = (text: string) => {
+    speak(text);
+  };
 
   return (
     <div className="flex items-center gap-2">
@@ -20,6 +25,7 @@ export const AccessibilityControls = () => {
         onClick={decreaseFontSize}
         className="p-2 text-brand-yellow hover:text-brand-brown transition-colors"
         aria-label={t("decreaseFont")}
+        onMouseEnter={() => handleMouseEnter(t("decreaseFont"))}
       >
         A-
       </button>
@@ -27,6 +33,7 @@ export const AccessibilityControls = () => {
         onClick={increaseFontSize}
         className="p-2 text-brand-yellow hover:text-brand-brown transition-colors"
         aria-label={t("increaseFont")}
+        onMouseEnter={() => handleMouseEnter(t("increaseFont"))}
       >
         A+
       </button>
@@ -34,10 +41,11 @@ export const AccessibilityControls = () => {
         onClick={toggleHighContrast}
         className={`p-2 transition-colors ${
           isHighContrast
-            ? "text-brand-brown"
+            ? "bg-brand-yellow text-brand-brown"
             : "text-brand-yellow hover:text-brand-brown"
         }`}
         aria-label={t("toggleHighContrast")}
+        onMouseEnter={() => handleMouseEnter(t("toggleHighContrast"))}
       >
         <Eye size={20} />
       </button>
@@ -45,10 +53,11 @@ export const AccessibilityControls = () => {
         onClick={toggleSpeech}
         className={`p-2 transition-colors ${
           isSpeechEnabled
-            ? "text-brand-brown"
+            ? "bg-brand-yellow text-brand-brown"
             : "text-brand-yellow hover:text-brand-brown"
         }`}
         aria-label={t("toggleNarration")}
+        onMouseEnter={() => handleMouseEnter(t("toggleNarration"))}
       >
         <Volume2 size={20} />
       </button>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Star } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface StarRatingProps {
   rating: number;
@@ -14,6 +15,7 @@ export const StarRating = ({
   className = "text-brand-yellow",
   onChange,
 }: StarRatingProps) => {
+  const { t } = useTranslation();
   return (
     <div
       className={`flex items-center ${className}`}
@@ -26,7 +28,7 @@ export const StarRating = ({
             <button
               key={index}
               type="button"
-              aria-label={`Avaliar com ${starValue} estrelas`}
+              aria-label={t("starAria", { count: starValue })}
               onClick={() => onChange(starValue)}
               data-testid="star-icon"
               className="bg-transparent border-none p-0 m-0 cursor-pointer"

@@ -1,11 +1,12 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
+import "@testing-library/jest-dom";
 import { StarRating } from "../components/StarRating";
 
 describe("StarRating", () => {
   it("renders stars and handles rating", () => {
     const onChange = vi.fn();
-    render(<StarRating value={2} onChange={onChange} />);
+    render(<StarRating rating={2} onChange={onChange} />);
     const stars = screen.getAllByRole("button");
     expect(stars.length).toBeGreaterThan(0);
     fireEvent.click(stars[3]);

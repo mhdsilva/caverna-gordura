@@ -7,7 +7,7 @@ import React, {
   useCallback,
 } from "react";
 
-interface AccessibilityContextType {
+export interface AccessibilityContextType {
   fontSize: number;
   increaseFontSize: () => void;
   decreaseFontSize: () => void;
@@ -18,7 +18,7 @@ interface AccessibilityContextType {
   speak: (text: string) => void;
 }
 
-const AccessibilityContext = createContext<
+export const AccessibilityContext = createContext<
   AccessibilityContextType | undefined
 >(undefined);
 
