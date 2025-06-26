@@ -4,7 +4,7 @@ export interface Produto {
   descricao: { [key: string]: string };
   preco: number;
   imagem: string;
-  categoria: 'hamburguer' | 'acompanhamento' | 'bebida';
+  categoria: "hamburguer" | "acompanhamento" | "bebida";
   disponivel: boolean;
   alergenos?: string[];
   reviews?: Review[];
@@ -23,7 +23,7 @@ export interface ItemCarrinho {
 export interface AdminContextoTipo {
   produtos: Produto[];
   alternarDisponibilidade: (produtoId: string) => void;
-  adicionarAvaliacao: (produtoId: string, review: Omit<Review, 'id'>) => void;
+  adicionarAvaliacao: (produtoId: string, review: Omit<Review, "id">) => void;
 }
 
 export interface CarrinhoContextoTipo {
