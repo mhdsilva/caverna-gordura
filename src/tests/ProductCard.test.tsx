@@ -46,9 +46,7 @@ describe("ProductCard", () => {
     renderWithCartProvider(
       <ProductCard produto={produto} onSelectProduct={onSelectProduct} />,
     );
-    fireEvent.click(
-      screen.getByLabelText("Ver avaliações de Produto Teste"),
-    );
+    fireEvent.click(screen.getByLabelText("Ver avaliações de Produto Teste"));
     expect(onSelectProduct).toHaveBeenCalledWith(produto);
   });
 

@@ -2,9 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { AccessibilityControls } from "../components/AccessibilityControls";
-import {
-  AccessibilityContext,
-} from "../context/AccessibilityContext";
+import { AccessibilityContext } from "../context/AccessibilityContext";
 import type { AccessibilityContextType } from "../context/AccessibilityContext";
 
 const speak = vi.fn();

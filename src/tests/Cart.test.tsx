@@ -89,9 +89,7 @@ describe("Cart component", () => {
     ];
 
     render(<Cart />);
-    fireEvent.click(
-      screen.getByLabelText("Remover Produto Teste do carrinho"),
-    );
+    fireEvent.click(screen.getByLabelText("Remover Produto Teste do carrinho"));
 
     expect(mockCartContext.removerDoCarrinho).toHaveBeenCalledWith("1");
   });

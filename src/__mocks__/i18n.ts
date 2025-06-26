@@ -88,4 +88,4 @@ export const useTranslation = () => {
       language: "pt",
     },
   };
-}; 
+};
