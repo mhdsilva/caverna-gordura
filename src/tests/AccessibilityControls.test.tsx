@@ -4,7 +4,6 @@ import "@testing-library/jest-dom";
 import { AccessibilityControls } from "../components/AccessibilityControls";
 import {
   AccessibilityContext,
-  AccessibilityProvider,
 } from "../context/AccessibilityContext";
 import type { AccessibilityContextType } from "../context/AccessibilityContext";
 

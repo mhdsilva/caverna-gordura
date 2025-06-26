@@ -1,6 +1,6 @@
 export const useTranslation = () => {
   return {
-    t: (str: string, options?: any) => {
+    t: (str: string, options?: Record<string, string | number>) => {
       const translations: Record<string, string> = {
         // General
         welcome: "Bem-vindo à Caverna da Gordura",
