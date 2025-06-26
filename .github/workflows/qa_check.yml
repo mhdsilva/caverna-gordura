@@ -42,6 +42,17 @@ jobs:
       - name: Rodar Testes
         run: npm test
 
-      # 6. Verifica se o build de produção está funcionando
+      # 6. Roda os testes com cobertura
+      - name: Rodar Testes com Cobertura
+        run: npm run test:coverage
+
+      # 7. Upload do relatório de cobertura
+      - name: Upload do Relatório de Cobertura
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+
+      # 8. Verifica se o build de produção está funcionando
       - name: Rodar Build de Produção
         run: npm run build

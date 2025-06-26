@@ -95,26 +95,11 @@ export const ReviewModal = ({
                   {t("yourRating")}
                 </label>
                 <div className="flex items-center mt-1">
-                  {[...Array(5)].map((_, index) => {
-                    const starValue = index + 1;
-                    return (
-                      <button
-                        type="button"
-                        key={starValue}
-                        onClick={() => setRating(starValue)}
-                        className="text-gray-300 hover:text-brand-yellow transition-colors"
-                        aria-label={t("rateWithStars", { starValue })}
-                      >
-                        <StarRating
-                          rating={rating}
-                          totalStars={1}
-                          className={
-                            starValue <= rating ? "text-brand-yellow" : ""
-                          }
-                        />
-                      </button>
-                    );
-                  })}
+                  <StarRating
+                    rating={rating}
+                    onChange={setRating}
+                    totalStars={5}
+                  />
                 </div>
               </div>
               <div>

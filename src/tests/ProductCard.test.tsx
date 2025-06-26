@@ -1,20 +1,21 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
+import "@testing-library/jest-dom";
 import { ProductCard } from "../components/ProductCard";
 import { CartProvider } from "../context/CartContext";
-import { Produto } from "../types";
+import type { Produto } from "../types";
 
 describe("ProductCard", () => {
   const produto: Produto = {
     id: "1",
-    nome: "Test",
+    nome: { pt: "Produto Teste", en: "Test Product" },
     preco: 10,
-    descricao: "Descrição do produto",
+    descricao: { pt: "Descrição do produto", en: "Product description" },
     imagem: "",
     categoria: "hamburguer",
     disponivel: true,
     alergenos: ["glúten"],
-    reviews: [{ id: "r1", rating: 4, comentario: "Ótimo!" }],
+    reviews: [{ id: "r1", author: "User", rating: 4, comment: "Ótimo!" }],
   };
 
   function renderWithCartProvider(ui: React.ReactElement) {
@@ -25,9 +26,9 @@ describe("ProductCard", () => {
     renderWithCartProvider(
       <ProductCard produto={produto} onSelectProduct={vi.fn()} />,
     );
-    expect(screen.getByText("Test")).toBeInTheDocument();
+    expect(screen.getByText("Produto Teste")).toBeInTheDocument();
     expect(screen.getByText("Descrição do produto")).toBeInTheDocument();
-    expect(screen.getByText(/adicionar ao carrinho/i)).toBeInTheDocument();
+    expect(screen.getByText("Adicionar ao carrinho")).toBeInTheDocument();
   });
 
   it("disables add to cart if not available", () => {
@@ -37,7 +38,7 @@ describe("ProductCard", () => {
         onSelectProduct={vi.fn()}
       />,
     );
-    expect(screen.getByText(/indisponível/i)).toBeDisabled();
+    expect(screen.getByText("Indisponível")).toBeDisabled();
   });
 
   it("calls onSelectProduct when review button is clicked", () => {
@@ -45,7 +46,7 @@ describe("ProductCard", () => {
     renderWithCartProvider(
       <ProductCard produto={produto} onSelectProduct={onSelectProduct} />,
     );
-    fireEvent.click(screen.getByLabelText(/ver avaliações/i));
+    fireEvent.click(screen.getByLabelText("Ver avaliações de Produto Teste"));
     expect(onSelectProduct).toHaveBeenCalledWith(produto);
   });
 
@@ -53,6 +54,6 @@ describe("ProductCard", () => {
     renderWithCartProvider(
       <ProductCard produto={produto} onSelectProduct={vi.fn()} />,
     );
-    expect(screen.getByText(/contém: glúten/i)).toBeInTheDocument();
+    expect(screen.getByText("Contém: Glúten")).toBeInTheDocument();
   });
 });

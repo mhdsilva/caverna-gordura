@@ -25,9 +25,9 @@ describe("LoginModal", () => {
     expect(
       screen.getByText("Bem-vindo à Caverna da Gordura"),
     ).toBeInTheDocument();
-    expect(screen.getByText("Fazer Login")).toBeInTheDocument();
-    expect(screen.getByText("Continuar sem Cadastro")).toBeInTheDocument();
-    expect(screen.getByLabelText("Fechar modal")).toBeInTheDocument();
+    expect(screen.getByText("Fazer Login com Google")).toBeInTheDocument();
+    expect(screen.getByText("Continuar sem cadastro")).toBeInTheDocument();
+    expect(screen.getByLabelText("Fechar")).toBeInTheDocument();
   });
 
   it("calls onClose when close button is clicked", () => {
@@ -38,7 +38,7 @@ describe("LoginModal", () => {
         onContinueWithoutLogin={onContinue}
       />,
     );
-    fireEvent.click(screen.getByLabelText("Fechar modal"));
+    fireEvent.click(screen.getByLabelText("Fechar"));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
@@ -50,7 +50,7 @@ describe("LoginModal", () => {
         onContinueWithoutLogin={onContinue}
       />,
     );
-    fireEvent.click(screen.getByText("Fazer Login"));
+    fireEvent.click(screen.getByText("Fazer Login com Google"));
     expect(onLogin).toHaveBeenCalledTimes(1);
   });
 
@@ -62,7 +62,7 @@ describe("LoginModal", () => {
         onContinueWithoutLogin={onContinue}
       />,
     );
-    fireEvent.click(screen.getByText("Continuar sem Cadastro"));
+    fireEvent.click(screen.getByText("Continuar sem cadastro"));
     expect(onContinue).toHaveBeenCalledTimes(1);
   });
 

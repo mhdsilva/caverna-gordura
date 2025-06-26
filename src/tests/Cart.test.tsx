@@ -6,10 +6,10 @@ import type { Coupon, ItemCarrinho } from "../types";
 
 // Mock the lucide-react icons
 vi.mock("lucide-react", () => ({
-  Minus: () => <span>Minus</span>,
-  Plus: () => <span>Plus</span>,
-  ShoppingCart: () => <span>ShoppingCart</span>,
-  X: () => <span>X</span>,
+  Minus: () => <span data-testid="minus-icon" />,
+  Plus: () => <span data-testid="plus-icon" />,
+  ShoppingCart: () => <span data-testid="cart-icon" />,
+  X: () => <span data-testid="x-icon" />,
 }));
 
 // Mock the CartContext with correct types
@@ -42,9 +42,8 @@ describe("Cart component", () => {
   it("renders empty cart message when there are no items", () => {
     render(<Cart />);
 
-    expect(screen.getByText("ShoppingCart")).toBeInTheDocument();
     expect(screen.getByText("Seu carrinho está vazio")).toBeInTheDocument();
-    expect(screen.queryByText("Finalizar Pedido")).not.toBeInTheDocument();
+    expect(screen.queryByText("Finalizar compra")).not.toBeInTheDocument();
   });
 
   it("renders cart items when items are present", () => {
@@ -52,10 +51,10 @@ describe("Cart component", () => {
       {
         produto: {
           id: "1",
-          nome: "Produto Teste",
+          nome: { pt: "Produto Teste", en: "Test Product" },
           preco: 100,
           imagem: "test.jpg",
-          descricao: "",
+          descricao: { pt: "Descrição", en: "Description" },
           categoria: "hamburguer",
           disponivel: true,
         },
@@ -70,7 +69,7 @@ describe("Cart component", () => {
     expect(screen.getByText("Produto Teste")).toBeInTheDocument();
     expect(screen.getByText("R$ 100.00")).toBeInTheDocument();
     expect(screen.getByText("Subtotal")).toBeInTheDocument();
-    expect(screen.getByText("Finalizar Pedido")).toBeInTheDocument();
+    expect(screen.getByText("Finalizar compra")).toBeInTheDocument();
   });
 
   it("calls removerDoCarrinho when remove button is clicked", () => {
@@ -78,10 +77,10 @@ describe("Cart component", () => {
       {
         produto: {
           id: "1",
-          nome: "Produto Teste",
+          nome: { pt: "Produto Teste", en: "Test Product" },
           preco: 100,
           imagem: "test.jpg",
-          descricao: "",
+          descricao: { pt: "Descrição", en: "Description" },
           categoria: "hamburguer",
           disponivel: true,
         },
@@ -90,7 +89,7 @@ describe("Cart component", () => {
     ];
 
     render(<Cart />);
-    fireEvent.click(screen.getByText("X"));
+    fireEvent.click(screen.getByLabelText("Remover Produto Teste do carrinho"));
 
     expect(mockCartContext.removerDoCarrinho).toHaveBeenCalledWith("1");
   });
@@ -100,10 +99,10 @@ describe("Cart component", () => {
       {
         produto: {
           id: "1",
-          nome: "Produto Teste",
+          nome: { pt: "Produto Teste", en: "Test Product" },
           preco: 100,
           imagem: "test.jpg",
-          descricao: "",
+          descricao: { pt: "Descrição", en: "Description" },
           categoria: "hamburguer",
           disponivel: true,
         },
@@ -114,11 +113,11 @@ describe("Cart component", () => {
     render(<Cart />);
 
     // Test decrease quantity
-    fireEvent.click(screen.getByText("Minus"));
+    fireEvent.click(screen.getByLabelText("Diminuir quantidade"));
     expect(mockCartContext.atualizarQuantidade).toHaveBeenCalledWith("1", 1);
 
     // Test increase quantity
-    fireEvent.click(screen.getByText("Plus"));
+    fireEvent.click(screen.getByLabelText("Aumentar quantidade"));
     expect(mockCartContext.atualizarQuantidade).toHaveBeenCalledWith("1", 3);
   });
 
@@ -127,10 +126,10 @@ describe("Cart component", () => {
       {
         produto: {
           id: "1",
-          nome: "Produto Teste",
+          nome: { pt: "Produto Teste", en: "Test Product" },
           preco: 100,
           imagem: "test.jpg",
-          descricao: "",
+          descricao: { pt: "Descrição", en: "Description" },
           categoria: "hamburguer",
           disponivel: true,
         },
@@ -153,10 +152,10 @@ describe("Cart component", () => {
       {
         produto: {
           id: "1",
-          nome: "Produto Teste",
+          nome: { pt: "Produto Teste", en: "Test Product" },
           preco: 100,
           imagem: "test.jpg",
-          descricao: "",
+          descricao: { pt: "Descrição", en: "Description" },
           categoria: "hamburguer",
           disponivel: true,
         },
@@ -175,10 +174,10 @@ describe("Cart component", () => {
       {
         produto: {
           id: "1",
-          nome: "Produto Teste",
+          nome: { pt: "Produto Teste", en: "Test Product" },
           preco: 100,
           imagem: "test.jpg",
-          descricao: "",
+          descricao: { pt: "Descrição", en: "Description" },
           categoria: "hamburguer",
           disponivel: true,
         },
@@ -206,10 +205,10 @@ describe("Cart component", () => {
       {
         produto: {
           id: "1",
-          nome: "Produto Teste",
+          nome: { pt: "Produto Teste", en: "Test Product" },
           preco: 100,
           imagem: "test.jpg",
-          descricao: "",
+          descricao: { pt: "Descrição", en: "Description" },
           categoria: "hamburguer",
           disponivel: true,
         },
@@ -219,7 +218,7 @@ describe("Cart component", () => {
     const mockOnCheckout = vi.fn();
 
     render(<Cart onCheckout={mockOnCheckout} />);
-    fireEvent.click(screen.getByText("Finalizar Pedido"));
+    fireEvent.click(screen.getByText("Finalizar compra"));
 
     expect(mockOnCheckout).toHaveBeenCalled();
   });
