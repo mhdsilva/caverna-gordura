@@ -24,7 +24,7 @@
 }
 
 .high-contrast .bg-brand-yellow {
-  background-color: #FFD700;
+  background-color: #ffd700;
 }
 
 .high-contrast .text-brand-brown {
@@ -37,5 +37,5 @@
 
 .high-contrast .hover\:bg-brand-brown:hover {
   background-color: #000000;
-  color: #FFD700;
+  color: #ffd700;
 }

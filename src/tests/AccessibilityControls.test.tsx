@@ -1,12 +1,12 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import '@testing-library/jest-dom';
-import { AccessibilityControls } from '../components/AccessibilityControls';
-import * as AccessibilityContext from '../context/AccessibilityContext';
+import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import "@testing-library/jest-dom";
+import { AccessibilityControls } from "../components/AccessibilityControls";
+import * as AccessibilityContext from "../context/AccessibilityContext";
 
-describe('AccessibilityControls', () => {
+describe("AccessibilityControls", () => {
   beforeEach(() => {
-    vi.spyOn(AccessibilityContext, 'useAccessibility').mockReturnValue({
+    vi.spyOn(AccessibilityContext, "useAccessibility").mockReturnValue({
       increaseFontSize: vi.fn(),
       decreaseFontSize: vi.fn(),
       toggleHighContrast: vi.fn(),
@@ -18,20 +18,22 @@ describe('AccessibilityControls', () => {
     });
   });
 
-  it('renders all control buttons', () => {
+  it("renders all control buttons", () => {
     render(<AccessibilityControls />);
-    expect(screen.getByLabelText('Diminuir fonte')).toBeInTheDocument();
-    expect(screen.getByLabelText('Aumentar fonte')).toBeInTheDocument();
-    expect(screen.getByLabelText('Alternar alto contraste')).toBeInTheDocument();
-    expect(screen.getByLabelText('Alternar narração')).toBeInTheDocument();
+    expect(screen.getByLabelText("Diminuir fonte")).toBeInTheDocument();
+    expect(screen.getByLabelText("Aumentar fonte")).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Alternar alto contraste"),
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText("Alternar narração")).toBeInTheDocument();
   });
 
-  it('calls context functions on button click', () => {
+  it("calls context functions on button click", () => {
     const increaseFontSize = vi.fn();
     const decreaseFontSize = vi.fn();
     const toggleHighContrast = vi.fn();
     const toggleSpeech = vi.fn();
-    vi.spyOn(AccessibilityContext, 'useAccessibility').mockReturnValue({
+    vi.spyOn(AccessibilityContext, "useAccessibility").mockReturnValue({
       increaseFontSize,
       decreaseFontSize,
       toggleHighContrast,
@@ -42,18 +44,18 @@ describe('AccessibilityControls', () => {
       speak: vi.fn(),
     });
     render(<AccessibilityControls />);
-    fireEvent.click(screen.getByLabelText('Diminuir fonte'));
-    fireEvent.click(screen.getByLabelText('Aumentar fonte'));
-    fireEvent.click(screen.getByLabelText('Alternar alto contraste'));
-    fireEvent.click(screen.getByLabelText('Alternar narração'));
+    fireEvent.click(screen.getByLabelText("Diminuir fonte"));
+    fireEvent.click(screen.getByLabelText("Aumentar fonte"));
+    fireEvent.click(screen.getByLabelText("Alternar alto contraste"));
+    fireEvent.click(screen.getByLabelText("Alternar narração"));
     expect(decreaseFontSize).toHaveBeenCalled();
     expect(increaseFontSize).toHaveBeenCalled();
     expect(toggleHighContrast).toHaveBeenCalled();
     expect(toggleSpeech).toHaveBeenCalled();
   });
 
-  it('applies correct style for high contrast and speech enabled', () => {
-    vi.spyOn(AccessibilityContext, 'useAccessibility').mockReturnValue({
+  it("applies correct style for high contrast and speech enabled", () => {
+    vi.spyOn(AccessibilityContext, "useAccessibility").mockReturnValue({
       increaseFontSize: vi.fn(),
       decreaseFontSize: vi.fn(),
       toggleHighContrast: vi.fn(),
@@ -64,9 +66,9 @@ describe('AccessibilityControls', () => {
       speak: vi.fn(),
     });
     render(<AccessibilityControls />);
-    const highContrastBtn = screen.getByLabelText('Alternar alto contraste');
-    const speechBtn = screen.getByLabelText('Alternar narração');
-    expect(highContrastBtn).toHaveClass('text-brand-brown');
-    expect(speechBtn).toHaveClass('text-brand-brown');
+    const highContrastBtn = screen.getByLabelText("Alternar alto contraste");
+    const speechBtn = screen.getByLabelText("Alternar narração");
+    expect(highContrastBtn).toHaveClass("text-brand-brown");
+    expect(speechBtn).toHaveClass("text-brand-brown");
   });
 });

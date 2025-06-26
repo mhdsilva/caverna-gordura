@@ -1,18 +1,18 @@
-import { render, screen } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
-import { RecommendationsPanel } from '../components/RecommendationsPanel';
-import { Produto } from '../types';
-import { CartProvider } from '../context/CartContext';
+import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import { RecommendationsPanel } from "../components/RecommendationsPanel";
+import { Produto } from "../types";
+import { CartProvider } from "../context/CartContext";
 
-describe('RecommendationsPanel', () => {
+describe("RecommendationsPanel", () => {
   const produtos: Produto[] = [
     {
-      id: '1',
-      nome: 'Test',
+      id: "1",
+      nome: "Test",
       preco: 10,
-      descricao: 'Descrição do produto',
-      imagem: '',
-      categoria: 'hamburguer',
+      descricao: "Descrição do produto",
+      imagem: "",
+      categoria: "hamburguer",
       disponivel: true,
       alergenos: [],
       reviews: [],
@@ -23,18 +23,21 @@ describe('RecommendationsPanel', () => {
     return render(<CartProvider>{ui}</CartProvider>);
   }
 
-  it('renders recommendations', () => {
+  it("renders recommendations", () => {
     renderWithCartProvider(
-      <RecommendationsPanel produtos={produtos} onSelectProduct={vi.fn()} />
+      <RecommendationsPanel produtos={produtos} onSelectProduct={vi.fn()} />,
     );
-    expect(screen.getByText('Test')).toBeInTheDocument();
-    expect(screen.getByText('Descrição do produto')).toBeInTheDocument();
+    expect(screen.getByText("Test")).toBeInTheDocument();
+    expect(screen.getByText("Descrição do produto")).toBeInTheDocument();
   });
 
-  it('calls onSelectProduct when a product is clicked', () => {
+  it("calls onSelectProduct when a product is clicked", () => {
     const onSelectProduct = vi.fn();
     renderWithCartProvider(
-      <RecommendationsPanel produtos={produtos} onSelectProduct={onSelectProduct} />
+      <RecommendationsPanel
+        produtos={produtos}
+        onSelectProduct={onSelectProduct}
+      />,
     );
     // Click the review button (which is the only clickable in ProductCard)
     screen.getAllByLabelText(/ver avaliações/i)[0].click();
