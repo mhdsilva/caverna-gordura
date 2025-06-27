@@ -45,16 +45,19 @@ export const ReviewModal = ({
     <div
       className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
       onClick={onClose}
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
     >
       <div
         className="bg-white rounded-lg shadow-xl p-6 md:p-8 w-11/12 md:max-w-2xl max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
+        onKeyDown={handleKeyDown}
+        tabIndex={0}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
       >
         <div className="flex justify-between items-start">
           <div className="flex-1">
-            <h2 className="text-2xl font-bold text-brand-brown">
+            <h2 id="modal-title" className="text-2xl font-bold text-brand-brown">
               {produto.nome[i18n.language]}
             </h2>
             <div className="flex items-center gap-2 text-lg">
