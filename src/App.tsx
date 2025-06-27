@@ -61,7 +61,7 @@ function MainContent() {
       );
       if (produtoAtualizado) {
         const novaAvaliacao = { ...review, id: `rev${Date.now()}` };
-        const reviewsAtuais = produtoAtualizado.reviews || [];
+        const reviewsAtuais = produtoAtualizado.reviews ?? [];
         setSelectedProduct({
           ...produtoAtualizado,
           reviews: [...reviewsAtuais, novaAvaliacao],

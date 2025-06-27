@@ -26,7 +26,7 @@ export const StarRating = ({
         if (onChange) {
           return (
             <button
-              key={index}
+              key={`star-button-${starValue}`}
               type="button"
               aria-label={t("starAria", { count: starValue })}
               onClick={() => onChange(starValue)}
@@ -45,7 +45,7 @@ export const StarRating = ({
         }
         return (
           <Star
-            key={index}
+            key={`star-${starValue}`}
             size={16}
             className={starValue <= rating ? "fill-current" : "text-gray-300"}
             fill={starValue <= rating ? "currentColor" : "none"}

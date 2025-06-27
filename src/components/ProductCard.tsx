@@ -27,7 +27,7 @@ export const ProductCard = ({
         produto.reviews.length
       : 0;
 
-  const reviewCount = produto.reviews?.length || 0;
+  const reviewCount = produto.reviews?.length ?? 0;
 
   return (
     <article

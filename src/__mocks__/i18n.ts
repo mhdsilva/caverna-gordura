@@ -1,3 +1,24 @@
+const getInterpolatedTranslation = (
+  str: string,
+  options: Record<string, string | number>,
+) => {
+  const interpolatedTranslations: Record<
+    string,
+    (opts: Record<string, string | number>) => string
+  > = {
+    reviewCount: (opts) => `(${opts.count} avaliações)`,
+    discount: (opts) => `Desconto (${opts.couponCode})`,
+    couponSuccess: (opts) => `Cupom "${opts.couponCode}" aplicado com sucesso!`,
+    removeFromCartAria: (opts) => `Remover ${opts.productName} do carrinho`,
+    starAria: (opts) => `Avaliar com ${opts.count} estrela(s)`,
+    contains: (opts) => `Contém: ${opts.allergens}`,
+    selectProductAria: (opts) => `Ver avaliações de ${opts.productName}`,
+    addToCartAria: (opts) => `Adicionar ${opts.productName} ao carrinho`,
+  };
+
+  return interpolatedTranslations[str]?.(options);
+};
+
 export const useTranslation = () => {
   return {
     t: (str: string, options?: Record<string, string | number>) => {
@@ -56,29 +77,11 @@ export const useTranslation = () => {
         glúten: "Glúten",
       };
 
-      if (str === "reviewCount" && options?.count) {
-        return `(${options.count} avaliações)`;
-      }
-      if (str === "discount" && options?.couponCode) {
-        return `Desconto (${options.couponCode})`;
-      }
-      if (str === "couponSuccess" && options?.couponCode) {
-        return `Cupom "${options.couponCode}" aplicado com sucesso!`;
-      }
-      if (str === "removeFromCartAria" && options?.productName) {
-        return `Remover ${options.productName} do carrinho`;
-      }
-      if (str === "starAria" && options?.count) {
-        return `Avaliar com ${options.count} estrela(s)`;
-      }
-      if (str === "contains" && options?.allergens) {
-        return `Contém: ${options.allergens}`;
-      }
-      if (str === "selectProductAria" && options?.productName) {
-        return `Ver avaliações de ${options.productName}`;
-      }
-      if (str === "addToCartAria" && options?.productName) {
-        return `Adicionar ${options.productName} ao carrinho`;
+      if (options) {
+        const interpolatedResult = getInterpolatedTranslation(str, options);
+        if (interpolatedResult) {
+          return interpolatedResult;
+        }
       }
 
       return translations[str] || str;
