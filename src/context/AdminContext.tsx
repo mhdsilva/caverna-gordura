@@ -32,7 +32,7 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
         produtosAtuais.map((produto) => {
           if (produto.id === produtoId) {
             const novaAvaliacao = { ...review, id: `rev${Date.now()}` };
-            const reviewsAtuais = produto.reviews || [];
+            const reviewsAtuais = produto.reviews ?? [];
             return { ...produto, reviews: [...reviewsAtuais, novaAvaliacao] };
           }
           return produto;
