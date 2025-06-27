@@ -35,10 +35,18 @@ export const ReviewModal = ({
         ).toFixed(1)
       : 0;
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      onClose();
+    }
+  };
+
   return (
     <div
       className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
       onClick={onClose}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
     >
       <div
         className="bg-white rounded-lg shadow-xl p-6 md:p-8 w-11/12 md:max-w-2xl max-h-[90vh] overflow-y-auto"
