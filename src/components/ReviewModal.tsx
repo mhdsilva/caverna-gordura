@@ -35,12 +35,6 @@ export const ReviewModal = ({
         ).toFixed(1)
       : 0;
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Escape") {
-      onClose();
-    }
-  };
-
   return (
     <div className="fixed inset-0 z-50">
       <button
@@ -50,12 +44,9 @@ export const ReviewModal = ({
         aria-label={t("closeModal")}
       />
       <div className="relative flex items-center justify-center h-full">
-        <div
-          className="bg-white rounded-lg shadow-xl p-6 md:p-8 w-11/12 md:max-w-2xl max-h-[90vh] overflow-y-auto"
-          onKeyDown={handleKeyDown}
-          tabIndex={0}
-          role="dialog"
-          aria-modal="true"
+        <dialog
+          open
+          className="bg-white rounded-lg shadow-xl p-6 md:p-8 w-11/12 md:max-w-2xl max-h-[90vh] overflow-y-auto border-0 outline-none m-0 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
           aria-labelledby="modal-title"
         >
           <div className="flex justify-between items-start">
@@ -168,7 +159,7 @@ export const ReviewModal = ({
               )}
             </div>
           </div>
-        </div>
+        </dialog>
       </div>
     </div>
   );
