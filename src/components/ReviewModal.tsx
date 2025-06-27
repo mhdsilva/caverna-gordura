@@ -36,7 +36,7 @@ export const ReviewModal = ({
       : 0;
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') {
+    if (e.key === "Escape") {
       onClose();
     }
   };
