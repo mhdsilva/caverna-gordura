@@ -1,5 +1,11 @@
-const getInterpolatedTranslation = (str: string, options: Record<string, string | number>) => {
-  const interpolatedTranslations: Record<string, (opts: Record<string, string | number>) => string> = {
+const getInterpolatedTranslation = (
+  str: string,
+  options: Record<string, string | number>,
+) => {
+  const interpolatedTranslations: Record<
+    string,
+    (opts: Record<string, string | number>) => string
+  > = {
     reviewCount: (opts) => `(${opts.count} avaliações)`,
     discount: (opts) => `Desconto (${opts.couponCode})`,
     couponSuccess: (opts) => `Cupom "${opts.couponCode}" aplicado com sucesso!`,

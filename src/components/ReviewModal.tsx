@@ -57,7 +57,10 @@ export const ReviewModal = ({
       >
         <div className="flex justify-between items-start">
           <div className="flex-1">
-            <h2 id="modal-title" className="text-2xl font-bold text-brand-brown">
+            <h2
+              id="modal-title"
+              className="text-2xl font-bold text-brand-brown"
+            >
               {produto.nome[i18n.language]}
             </h2>
             <div className="flex items-center gap-2 text-lg">
