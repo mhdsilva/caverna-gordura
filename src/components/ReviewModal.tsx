@@ -66,7 +66,7 @@ export const ReviewModal = ({
                 {averageRating}
               </span>
               <span className="text-gray-500">
-                {t("reviewCount", { count: produto.reviews?.length || 0 })}
+                {t("reviewCount", { count: produto.reviews?.length ?? 0 })}
               </span>
             </div>
           </div>

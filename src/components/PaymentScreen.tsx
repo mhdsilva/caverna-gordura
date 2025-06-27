@@ -89,7 +89,7 @@ const PaymentScreen = ({
               className="py-2 flex justify-between items-center"
             >
               <span>
-                {produto.nome[i18n.language || "pt"]} x{quantidade}
+                {produto.nome[i18n.language ?? "pt"]} x{quantidade}
               </span>
               <span>
                 {t("currency")} {(produto.preco * quantidade).toFixed(2)}
